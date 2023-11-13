@@ -1,31 +1,38 @@
 <?php
 
+// Inicializar el puntaje
+$puntaje = 100;
+
+// Verificar si se ha enviado un formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener la entrada del usuario
     $entrada = $_POST["entrada"];
 
-    // Validar la entrada (puedes agregar más validaciones según tus necesidades)
-    if (strlen($entrada) > 0) {
-        // Escapar la entrada para evitar inyecciones
-        $entrada = escapeshellarg($entrada);
+    // Analizar la longitud de la entrada
+    $longitud = strlen($entrada);
 
-        // Ejecutar el script de bash y obtener la salida
-        exec("bash tu_script.sh $entrada", $output, $status);
+    // Contar la cantidad de caracteres especiales en la entrada
+    $num_caracteres_especiales = preg_match_all('/[!@#$%^&*(),.?":{}|<>]/', $entrada);
 
-        // Verificar el estado de ejecución
-        if ($status === 0) {
-            // Éxito
-            $puntaje = intval($output[0]);
-            echo "Puntaje: $puntaje";
-        } else {
-            // Error en la ejecución del script
-            echo "Error al ejecutar el script.";
+    // Verificar las condiciones y ajustar el puntaje
+    if ($num_caracteres_especiales == 0) {
+        $puntaje -= 30;
+    } elseif ($num_caracteres_especiales == 1) {
+        $puntaje -= 15;
+    }
+
+    // Verificar las condiciones adicionales y ajustar el puntaje
+    if ($longitud < 8) {
+        $puntaje -= 50;
+    } elseif ($longitud < 12) {
+        $puntaje -= 20;
+    } elseif ($longitud < 32) {
+        // No se resta nada si hay al menos 3 caracteres especiales
+        if ($num_caracteres_especiales < 3) {
+            $puntaje -= 10;
         }
-    } else {
-        echo "Por favor, proporciona una entrada.";
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -42,5 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br>
         <button type="submit">Calcular Puntaje</button>
     </form>
+
+    <?php
+    // Mostrar el puntaje si se ha enviado un formulario
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "<p>Puntaje final: $puntaje</p>";
+    }
+    ?>
 </body>
 </html>
