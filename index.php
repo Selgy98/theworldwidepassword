@@ -161,6 +161,29 @@ if ($resultado_repetida) {
         echo "<span class='circle'></span>";
         echo "</p>";
     }
+
+// Obtener el promedio de los puntajes
+$consulta_promedio = "SELECT AVG(SCORE) as promedio FROM storedpss";
+$resultado_promedio = $conexion->query($consulta_promedio);
+
+if ($resultado_promedio) {
+    $fila_promedio = $resultado_promedio->fetch_assoc();
+    $promedio_puntajes = $fila_promedio['promedio'];
+
+    // Calcular el porcentaje de cuánto más segura es la contraseña actual
+    $porcentaje_mas_segura = 0;
+    if ($promedio_puntajes > 0) {
+        $porcentaje_mas_segura = (($puntaje - $promedio_puntajes) / $promedio_puntajes) * 100;
+    }
+
+    // Ajustar el mensaje según el porcentaje
+    $mensaje = ($porcentaje_mas_segura >= 0) ? "más segura" : "menos segura";
+    $porcentaje_mas_segura = abs($porcentaje_mas_segura);
+
+    // Imprimir el resultado
+    echo "<p>Tu contraseña es aproximadamente un " . round($porcentaje_mas_segura, 2) . "% $mensaje que el promedio de las demás contraseñas.</p>";
+}
+
     ?>
 </body>
 </html>
