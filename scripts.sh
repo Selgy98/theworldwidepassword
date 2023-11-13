@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Inicializar el puntaje
-puntaje=10
+puntaje=100
 
 # Verificar si se proporciona un parámetro
 if [ $# -eq 0 ]; then
@@ -17,12 +17,12 @@ longitud=${#entrada}
 
 # Verificar las condiciones y ajustar el puntaje
 if [ $longitud -lt 8 ]; then
-    puntaje=$((puntaje - 5))
+    puntaje=$((puntaje - 50))
 elif [ $longitud -lt 12 ]; then
-    puntaje=$((puntaje - 2))
+    puntaje=$((puntaje - 20))
 elif [ $longitud -lt 32 ]; then
-    puntaje=$((puntaje - 1))
+    puntaje=$((puntaje - 10))
 fi
 
 # Mostrar el puntaje final
-echo "Puntaje final: $puntaje"
+echo "Score: $puntaje"
