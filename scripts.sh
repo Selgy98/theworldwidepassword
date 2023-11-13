@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Inicializar el puntaje
-puntaje=10
+puntaje=100
 
 # Verificar si se proporciona un parámetro
 if [ $# -eq 0 ]; then
