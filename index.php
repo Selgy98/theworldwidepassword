@@ -184,6 +184,8 @@ if ($resultado_promedio) {
     echo "<p>Tu contraseña es aproximadamente un " . round($porcentaje_mas_segura, 2) . "% $mensaje que el promedio de las demás contraseñas.</p>";
 }
 
-    ?>
+    
+
+?>
 </body>
 </html>
